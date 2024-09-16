@@ -21,6 +21,7 @@
       "@app/*": ["src/app/*"],
       "@common/*": ["src/common/*"],
       "@health/*": ["src/health/*"],
+      "@modules/*": ["src/modules/*"],
     }
   }
 }

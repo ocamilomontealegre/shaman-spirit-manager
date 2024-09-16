@@ -2,6 +2,8 @@ import { Module } from "@nestjs/common";
 import { ConfigModule as NestConfigModule } from "@nestjs/config";
 import { ConfigModule } from "@common/config/config.module";
 import { HealthModule } from "@health/health.module";
+import { ShamanModule } from "@modules/shaman/shaman.module";
+import { SpiritModule } from "@modules/spirit/spirit.module";
 import { appConfig, nodeConfig } from "@common/env";
 
 @Module({
@@ -13,6 +15,8 @@ import { appConfig, nodeConfig } from "@common/env";
     }),
     ConfigModule,
     HealthModule,
+    ShamanModule,
+    SpiritModule,
   ],
 })
 export class AppModule {}
