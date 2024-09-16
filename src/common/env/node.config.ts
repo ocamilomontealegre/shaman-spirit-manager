@@ -1,5 +1,5 @@
 import { registerAs } from "@nestjs/config";
-import { IsEnum, IsNotEmpty, IsNumber } from "class-validator";
+import { IsEnum, IsNotEmpty, IsNumber, Min, Max } from "class-validator";
 import { Expose, Type } from "class-transformer";
 import { validateEnv } from "@common/utils";
 import { Environment } from "@common/enums";
@@ -7,6 +7,8 @@ import { Environment } from "@common/enums";
 export class NodeEnvVariables {
   @IsNotEmpty()
   @IsNumber()
+  @Min(0)
+  @Max(65535)
   @Type(() => Number)
   @Expose()
   public readonly NODE_PORT!: number;
