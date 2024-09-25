@@ -14,6 +14,7 @@ import { pgConfig } from "@common/env";
         username: _pgConfig.username,
         password: _pgConfig.password,
         database: _pgConfig.database,
+        synchronize: true,
       }),
     }),
   ],
