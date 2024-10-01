@@ -10,8 +10,8 @@ import {
 
 @Entity()
 export class Shaman {
-  @PrimaryGeneratedColumn()
-  public id: number;
+  @PrimaryGeneratedColumn("uuid")
+  public id: string;
 
   @Column()
   @IsNotEmpty()
@@ -20,7 +20,7 @@ export class Shaman {
   @Column()
   @IsNotEmpty()
   @Min(0)
-  public furyokuLevel: string;
+  public furyokuLevel: number;
 
   @Column("text", { array: true, default: [] })
   public guardianSpirits: string[];
@@ -31,6 +31,6 @@ export class Shaman {
   @UpdateDateColumn({ type: "timestamp" })
   public updatedAt: Date;
 
-  @DeleteDateColumn({ type: "timestamp", nullable: true })
+  @DeleteDateColumn({ type: "timestamp", nullable: true, default: null })
   public deletedAt: Date | null;
 }
