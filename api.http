@@ -1,0 +1,26 @@
+### Variables
+@baseUrl = http://localhost:3000/api/v1/
+@shamanId = "b83a0865-ff9a-4b01-8523-b294b4c8c4a5"
+
+### Check Health Status
+GET {{baseUrl}}health
+
+### Create shaman
+POST {{baseUrl}}shamans
+Content-Type: application/json
+
+{
+  "name": "Len Tao",
+  "furyokuLevel": 15000,
+  "guardianSpirits": ["Bason"]
+}
+
+### Get shaman
+GET {{baseUrl}}shamans
+
+### Get shaman by id
+GET {{baseUrl}}shamans/{{shamanId}}
+
+
+
+

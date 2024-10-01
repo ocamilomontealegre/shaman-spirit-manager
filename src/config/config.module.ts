@@ -1,6 +1,6 @@
 import { Module, type DynamicModule } from "@nestjs/common";
 import { ConfigModule as NestConfigModule } from "@nestjs/config";
-import { HttpExceptionFilter } from "@common/exception-filters";
+import { HttpExceptionFilter, TypeOrmExceptionFilter } from "@common/exception-filters";
 import { APP_FILTER } from "@nestjs/core";
 import { appConfig, nodeConfig, pgConfig } from "@common/env";
 
@@ -16,6 +16,10 @@ import { appConfig, nodeConfig, pgConfig } from "@common/env";
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: TypeOrmExceptionFilter,
     },
   ],
 })

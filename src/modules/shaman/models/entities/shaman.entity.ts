@@ -13,11 +13,11 @@ export class Shaman {
   @PrimaryGeneratedColumn("uuid")
   public id: string;
 
-  @Column()
+  @Column({ type: "varchar", length: 250, unique: true, nullable: false })
   @IsNotEmpty()
   public name: string;
 
-  @Column()
+  @Column({ type: "int", nullable: false })
   @IsNotEmpty()
   @Min(0)
   public furyokuLevel: number;
