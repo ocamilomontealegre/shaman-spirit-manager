@@ -1,18 +1,19 @@
-import { IsNotEmpty, Min } from "class-validator";
+import { IsNotEmpty } from "class-validator";
 import {
-  Entity,
   Column,
-  PrimaryGeneratedColumn,
   CreateDateColumn,
-  UpdateDateColumn,
   DeleteDateColumn,
-  ManyToMany,
+  Entity,
   JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
-import { Spirit } from "@modules/spirit/models/entities";
+import { Shaman } from "@modules/shaman/models/entities";
+import { SpiritClass } from "../enums/spirit-class.enum";
 
 @Entity()
-export class Shaman {
+export class Spirit {
   @PrimaryGeneratedColumn("uuid")
   public id: string;
 
@@ -20,14 +21,16 @@ export class Shaman {
   @IsNotEmpty()
   public name: string;
 
-  @Column({ type: "int", nullable: false })
+  @Column({ type: "int", nullable: false, default: 0 })
   @IsNotEmpty()
-  @Min(0)
   public furyokuLevel: number;
 
-  @ManyToMany(() => Spirit, (spirit) => spirit.shamans, { cascade: true })
-  @JoinTable()
-  public guardianSpirits: Spirit[];
+  @Column({ type: "varchar", length: 250, nullable: false })
+  @IsNotEmpty()
+  public class: SpiritClass;
+
+  @ManyToMany(() => Shaman, (shaman) => shaman.guardianSpirits, { cascade: true })
+  public shamans: Shaman[];
 
   @CreateDateColumn({ type: "timestamp" })
   public createdAt: Date;

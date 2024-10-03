@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common"
 import { ShamanService } from "../services/shaman.service";
 import { Shaman } from "../models/entities";
 import { SHAMAN_ENDPOINT } from "../models/constants";
-import { CreateShamanDto, UpdateShamanDto } from "../dto";
+import { CreateShamanDto, UpdateShamanDto } from "../models/dto";
 
 @Controller(SHAMAN_ENDPOINT)
 export class ShamanController {
