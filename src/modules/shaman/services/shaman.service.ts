@@ -1,44 +1,28 @@
 import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { ShamanRepository } from "../repositories/shaman.repository";
 import { Shaman } from "../models/entities/shaman.entity";
-import { Spirit } from "@modules/spirit/models/entities";
 import { CreateShamanDto, UpdateShamanDto } from "../models/dto";
 
 @Injectable()
 export class ShamanService {
-  public constructor(
-    @InjectRepository(Shaman) private readonly _shamanRepository: Repository<Shaman>,
-    @InjectRepository(Spirit) private readonly _spiritRepository: Repository<Spirit>,
-  ) {}
+  public constructor(private readonly _shamanRepository: ShamanRepository) {}
 
   public async create(shamanDto: CreateShamanDto): Promise<Shaman> {
-    const spirits = await Promise.all(
-      shamanDto.guardianSpirits.map(async (spiritName) => {
-        let spirit = await this._shamanRepository.findOne({ where: { name: spiritName } });
-
-        if (!spirit) {
-          spirit = this._spiritRepository.create({ name: spiritName });
-          spirit = this._spiritRepository.save(spirit);
-        }
-
-        return spirit;
-      }),
-    );
+    return this._shamanRepository.createShaman(shamanDto);
   }
 
   public async findAll(): Promise<Shaman[]> {
-    return this._shamanRepository.find();
+    return this._shamanRepository.find({ relations: ["guardianSpirits"] });
   }
 
   public async findOne(id: string): Promise<Shaman> {
-    return this._shamanRepository.findOneBy({ id });
+    return this._shamanRepository.findOne({ where: { id }, relations: ["guardianSpirits"] });
   }
 
-  public async update(id: string, shaman: UpdateShamanDto): Promise<Shaman | null> {
-    const result = await this._shamanRepository.update(id, shaman);
-    return result ? await this._shamanRepository.findOneBy({ id }) : null;
-  }
+  // public async update(id: string, shaman: UpdateShamanDto): Promise<Shaman | null> {
+  //   const result = await this._shamanRepository.update(id, shaman);
+  //   return result ? await this._shamanRepository.findOneBy({ id }) : null;
+  // }
 
   public async delete(id: string): Promise<Shaman | null> {
     const result = await this._shamanRepository.softDelete({ id });

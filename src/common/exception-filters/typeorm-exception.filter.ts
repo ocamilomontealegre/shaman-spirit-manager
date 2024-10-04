@@ -15,7 +15,7 @@ export class TypeOrmExceptionFilter implements ExceptionFilter {
       statusCode: status,
       timestamp: new Date().toISOString(),
       path: request.url,
-      message,
+      message: exception.message,
     });
   }
 }

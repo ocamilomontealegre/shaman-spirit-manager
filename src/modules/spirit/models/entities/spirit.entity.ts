@@ -4,7 +4,6 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinTable,
   ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -25,11 +24,11 @@ export class Spirit {
   @IsNotEmpty()
   public furyokuLevel: number;
 
-  @Column({ type: "varchar", length: 250, nullable: false })
+  @Column({ type: "enum", enum: SpiritClass, nullable: false })
   @IsNotEmpty()
   public class: SpiritClass;
 
-  @ManyToMany(() => Shaman, (shaman) => shaman.guardianSpirits, { cascade: true })
+  @ManyToMany(() => Shaman, (shaman) => shaman.guardianSpirits)
   public shamans: Shaman[];
 
   @CreateDateColumn({ type: "timestamp" })
