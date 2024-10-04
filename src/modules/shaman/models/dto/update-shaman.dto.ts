@@ -1,12 +1,14 @@
 import {
-  ArrayMinSize,
   IsArray,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
+  ValidateNested,
   Min,
 } from "class-validator";
+import { UpdateSpiritDto } from "@modules/spirit/models/dto";
+import { Type } from "class-transformer";
 
 export class UpdateShamanDto {
   @IsOptional()
@@ -22,7 +24,7 @@ export class UpdateShamanDto {
 
   @IsOptional()
   @IsArray()
-  @IsString({ each: true })
-  @ArrayMinSize(0)
-  public guardianSpirits: string[];
+  @ValidateNested()
+  @Type(() => UpdateSpiritDto)
+  public guardianSpirits: UpdateSpiritDto[];
 }

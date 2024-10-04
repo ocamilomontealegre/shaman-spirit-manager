@@ -23,13 +23,10 @@ export class ShamanController {
     return this._shamanService.findOne(id);
   }
 
-  // @Put(":id")
-  // public async update(
-  //   @Param("id") id: string,
-  //   @Body() shaman: UpdateShamanDto,
-  // ): Promise<Shaman | null> {
-  //   return this._shamanService.update(id, shaman);
-  // }
+  @Put(":id")
+  public async update(@Param("id") id: string, @Body() shaman: UpdateShamanDto): Promise<any> {
+    return this._shamanService.update(id, shaman);
+  }
 
   @Delete(":id")
   public async delete(@Param("id") id: string): Promise<Shaman | null> {

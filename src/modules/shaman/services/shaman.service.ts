@@ -19,10 +19,9 @@ export class ShamanService {
     return this._shamanRepository.findOne({ where: { id }, relations: ["guardianSpirits"] });
   }
 
-  // public async update(id: string, shaman: UpdateShamanDto): Promise<Shaman | null> {
-  //   const result = await this._shamanRepository.update(id, shaman);
-  //   return result ? await this._shamanRepository.findOneBy({ id }) : null;
-  // }
+  public async update(id: string, shaman: UpdateShamanDto): Promise<any> {
+    return await this._shamanRepository.updateShaman(id, shaman);
+  }
 
   public async delete(id: string): Promise<Shaman | null> {
     const result = await this._shamanRepository.softDelete({ id });

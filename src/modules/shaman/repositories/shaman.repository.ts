@@ -40,9 +40,23 @@ export class ShamanRepository extends Repository<Shaman> {
     });
   }
 
-  public async updateShaman(shamanDto: UpdateShamanDto): Promise<any> {
-    const { guardianSpirits } = shamanDto;
+  public async updateShaman(id: string, shamanDto: UpdateShamanDto): Promise<any> {
+    const { guardianSpirits, ...shamanData } = shamanDto;
 
-    return await this._dataSource.transaction((entityManager) => {});
+    const guardianSpiritsNames = guardianSpirits.map((guardianSpirit) => guardianSpirit.name);
+
+    return await this._dataSource.transaction(async (entityManager) => {
+      // Find existing spirits
+      const existingSpirits = await entityManager.find(Spirit, {
+        where: { name: In(guardianSpiritsNames) },
+      });
+      console.log(
+        "🚀 ~ ShamanRepository ~ returnawaitthis._dataSource.transaction ~ existingSpirits:",
+        existingSpirits,
+      );
+
+      await entityManager.update(Shaman, id, shamanData);
+      //
+    });
   }
 }
