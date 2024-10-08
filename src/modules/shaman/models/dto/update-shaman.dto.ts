@@ -21,10 +21,4 @@ export class UpdateShamanDto {
   @IsNumber()
   @Min(0)
   public furyokuLevel: number;
-
-  @IsOptional()
-  @IsArray()
-  @ValidateNested()
-  @Type(() => UpdateSpiritDto)
-  public guardianSpirits: UpdateSpiritDto[];
 }

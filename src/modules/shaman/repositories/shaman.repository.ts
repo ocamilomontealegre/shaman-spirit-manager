@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
-import { DataSource, In, Repository } from "typeorm";
+import { DataSource, EntityManager, In, Repository } from "typeorm";
 import { Shaman } from "../models/entities";
 import { Spirit } from "@modules/spirit/models/entities";
-import { CreateShamanDto, UpdateShamanDto } from "../models/dto";
+import { CreateShamanDto } from "../models/dto";
 
 @Injectable()
 export class ShamanRepository extends Repository<Shaman> {
@@ -10,11 +10,21 @@ export class ShamanRepository extends Repository<Shaman> {
     super(Shaman, _dataSource.createEntityManager());
   }
 
-  public async createShaman(shamanDto: CreateShamanDto): Promise<Shaman> {
-    const { guardianSpirits } = shamanDto;
-    const guardianSpiritsNames = guardianSpirits.map((guardianSpirit) => guardianSpirit.name);
+  private async findShamanByName(name: string, entityManager: EntityManager): Promise<Shaman> {
+    return entityManager.findOne(Shaman, { where: { name }, relations: ["guardianSpirits"] });
+  }
 
-    return await this._dataSource.transaction(async (entityManager) => {
+  public async createShaman(shamanDto: CreateShamanDto): Promise<Shaman> {
+    return await this._dataSource.transaction(async (entityManager: EntityManager) => {
+      let shaman: Shaman;
+
+      /* Look if the shaman already exists in the database */
+      shaman = await this.findShamanByName(shamanDto.name, entityManager);
+      if (shaman) return shaman;
+
+      const { guardianSpirits } = shamanDto;
+      const guardianSpiritsNames = guardianSpirits.map((guardianSpirit) => guardianSpirit.name);
+
       const existingSpirits = await entityManager.find(Spirit, {
         where: { name: In(guardianSpiritsNames) },
       });
@@ -31,7 +41,7 @@ export class ShamanRepository extends Repository<Shaman> {
         where: { name: In(guardianSpiritsNames) },
       });
 
-      const shaman = entityManager.create(Shaman, {
+      shaman = entityManager.create(Shaman, {
         ...shamanDto,
         guardianSpirits: allSpirits,
       });
@@ -40,23 +50,5 @@ export class ShamanRepository extends Repository<Shaman> {
     });
   }
 
-  public async updateShaman(id: string, shamanDto: UpdateShamanDto): Promise<any> {
-    const { guardianSpirits, ...shamanData } = shamanDto;
-
-    const guardianSpiritsNames = guardianSpirits.map((guardianSpirit) => guardianSpirit.name);
-
-    return await this._dataSource.transaction(async (entityManager) => {
-      // Find existing spirits
-      const existingSpirits = await entityManager.find(Spirit, {
-        where: { name: In(guardianSpiritsNames) },
-      });
-      console.log(
-        "🚀 ~ ShamanRepository ~ returnawaitthis._dataSource.transaction ~ existingSpirits:",
-        existingSpirits,
-      );
-
-      await entityManager.update(Shaman, id, shamanData);
-      //
-    });
-  }
+  // public async bindSpiritToShaman():
 }

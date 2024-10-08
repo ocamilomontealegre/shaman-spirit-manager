@@ -1,5 +1,11 @@
-import { NestFactory } from "@nestjs/core";
-import { Logger, ValidationPipe, VersioningType, type INestApplication } from "@nestjs/common";
+import { NestFactory, Reflector } from "@nestjs/core";
+import {
+  ClassSerializerInterceptor,
+  Logger,
+  ValidationPipe,
+  VersioningType,
+  type INestApplication,
+} from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { AppModule } from "@app/app.module";
 import { configureOpenAPI } from "@common/open-api/open-api.config";
@@ -32,6 +38,10 @@ const configureApp = (
   });
 
   app.useGlobalPipes(new ValidationPipe());
+
+  app.useGlobalInterceptors(
+    new ClassSerializerInterceptor(app.get(Reflector), { excludeExtraneousValues: true }),
+  );
 };
 
 const startServer = async (

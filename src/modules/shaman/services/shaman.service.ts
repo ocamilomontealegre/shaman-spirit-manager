@@ -15,16 +15,20 @@ export class ShamanService {
     return this._shamanRepository.find({ relations: ["guardianSpirits"] });
   }
 
-  public async findOne(id: string): Promise<Shaman> {
-    return this._shamanRepository.findOne({ where: { id }, relations: ["guardianSpirits"] });
+  public async findOneById(id: string): Promise<Shaman> {
+    return this._shamanRepository.findOne({
+      where: { id },
+      relations: ["guardianSpirits"],
+    });
   }
 
-  public async update(id: string, shaman: UpdateShamanDto): Promise<any> {
-    return await this._shamanRepository.updateShaman(id, shaman);
+  public async update(id: string, shaman: UpdateShamanDto): Promise<Shaman | null> {
+    const result = await this._shamanRepository.update(id, shaman);
+    return result ? await this.findOneById(id) : null;
   }
 
   public async delete(id: string): Promise<Shaman | null> {
     const result = await this._shamanRepository.softDelete({ id });
-    return result ? await this._shamanRepository.findOneBy({ id }) : null;
+    return result ? await this.findOneById(id) : null;
   }
 }

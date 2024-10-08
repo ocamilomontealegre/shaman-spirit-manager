@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { ShamanService } from "../services/shaman.service";
 import { Shaman } from "../models/entities";
-import { SHAMAN_ENDPOINT } from "../models/constants";
 import { CreateShamanDto, UpdateShamanDto } from "../models/dto";
+import { SHAMAN_ENDPOINT } from "../models/constants";
 
 @Controller(SHAMAN_ENDPOINT)
 export class ShamanController {
@@ -19,12 +19,15 @@ export class ShamanController {
   }
 
   @Get(":id")
-  public async findOne(@Param("id") id: string): Promise<Shaman | null> {
-    return this._shamanService.findOne(id);
+  public async findOneById(@Param("id") id: string): Promise<Shaman | null> {
+    return this._shamanService.findOneById(id);
   }
 
   @Put(":id")
-  public async update(@Param("id") id: string, @Body() shaman: UpdateShamanDto): Promise<any> {
+  public async update(
+    @Param("id") id: string,
+    @Body() shaman: UpdateShamanDto,
+  ): Promise<Shaman | null> {
     return this._shamanService.update(id, shaman);
   }
 
