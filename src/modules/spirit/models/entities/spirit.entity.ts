@@ -1,4 +1,4 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, IsNumber } from "class-validator";
 import {
   Column,
   CreateDateColumn,
@@ -25,6 +25,7 @@ export class Spirit {
 
   @Column({ type: "int", nullable: false, default: 0 })
   @IsNotEmpty()
+  @IsNumber()
   @Expose()
   public furyokuLevel: number;
 
@@ -32,6 +33,10 @@ export class Spirit {
   @IsNotEmpty()
   @Expose()
   public class: SpiritClass;
+
+  @Column({ type: "int", nullable: true, default: 1 })
+  @Expose()
+  public level: number;
 
   @ManyToMany(() => Shaman, (shaman) => shaman.guardianSpirits)
   @Expose()

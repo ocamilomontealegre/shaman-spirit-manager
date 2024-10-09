@@ -3,10 +3,11 @@ import { ShamanService } from "../services/shaman.service";
 import { Shaman } from "../models/entities";
 import { CreateShamanDto, UpdateShamanDto } from "../models/dto";
 import { SHAMAN_ENDPOINT } from "../models/constants";
+import { Spirit } from "@modules/spirit/models/entities";
 
 @Controller(SHAMAN_ENDPOINT)
 export class ShamanController {
-  public constructor(private readonly _shamanService: ShamanService) {}
+  public constructor(private readonly _shamanService: ShamanService) { }
 
   @Post()
   public async create(@Body() shaman: CreateShamanDto): Promise<Shaman> {
@@ -34,5 +35,15 @@ export class ShamanController {
   @Delete(":id")
   public async delete(@Param("id") id: string): Promise<Shaman | null> {
     return this._shamanService.delete(id);
+  }
+
+  @Put()
+  public async bindSpiritToShaman(@Body() { shamanId, spiritId }: Record<string, string>): Promise<Shaman | null> {
+    return this._shamanService.bindSpiritToShaman(shamanId, spiritId);
+  }
+
+  @Put("train/:id")
+  public async trainSpirit(@Param("id") id: string, @Body() { spiritId }: Record<string, string>): Promise<Spirit | null> {
+    return this._shamanService.trainSpirit(id, spiritId);
   }
 }

@@ -6,7 +6,7 @@ import type { IHealthMessage } from "../interfaces/health-message.interface";
 @ApiTags("Health")
 @Controller(HEALTH_ENDPOINT)
 export class HealthController {
-  public constructor(@Inject(HEALTH_SERVICE) private readonly _healthService: IHealthMessage) {}
+  public constructor(@Inject(HEALTH_SERVICE) private readonly _healthService: IHealthMessage) { }
 
   @Get()
   @ApiOperation({ summary: "Checks app status" })

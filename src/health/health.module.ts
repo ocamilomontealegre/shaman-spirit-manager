@@ -11,4 +11,4 @@ import { HEALTH_MESSAGE, HEALTH_SERVICE } from "./constants";
     },
   ],
 })
-export class HealthModule {}
+export class HealthModule { }

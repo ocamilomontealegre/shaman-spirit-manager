@@ -10,8 +10,16 @@ export class ShamanRepository extends Repository<Shaman> {
     super(Shaman, _dataSource.createEntityManager());
   }
 
-  private async findShamanByName(name: string, entityManager: EntityManager): Promise<Shaman> {
-    return entityManager.findOne(Shaman, { where: { name }, relations: ["guardianSpirits"] });
+  private async findShamanByName(name: string): Promise<Shaman | null> {
+    return this.findOne({ where: { name }, relations: ["guardianSpirits"] });
+  }
+
+  private findBindedSpirit(guardianSpirits: Spirit[], spiritId: string): Spirit | null {
+    return guardianSpirits.find((spirit) => spirit.id === spiritId);
+  }
+
+  public async findShamanById(id: string): Promise<Shaman | null> {
+    return this.findOne({ where: { id }, relations: ["guardianSpirits"] });
   }
 
   public async createShaman(shamanDto: CreateShamanDto): Promise<Shaman> {
@@ -19,7 +27,7 @@ export class ShamanRepository extends Repository<Shaman> {
       let shaman: Shaman;
 
       /* Look if the shaman already exists in the database */
-      shaman = await this.findShamanByName(shamanDto.name, entityManager);
+      shaman = await this.findShamanByName(shamanDto.name);
       if (shaman) return shaman;
 
       const { guardianSpirits } = shamanDto;
@@ -50,5 +58,35 @@ export class ShamanRepository extends Repository<Shaman> {
     });
   }
 
-  // public async bindSpiritToShaman():
+  public async bindSpiritToShaman(shamanId: string, spiritId: string): Promise<Shaman | null> {
+    return await this._dataSource.transaction(async (entityManager: EntityManager) => {
+      const spirit = await entityManager.findOneBy(Spirit, { id: spiritId });
+      if (!spirit) return null;
+
+      const shaman = await this.findShamanById(shamanId);
+      if (!shaman) return null;
+
+      const existingSpirit = this.findBindedSpirit(shaman.guardianSpirits, spiritId);
+      if (existingSpirit) return shaman;
+
+      shaman.guardianSpirits.push(spirit);
+
+      return await entityManager.save(Shaman, shaman);
+    })
+  }
+
+  public async trainSpirit(shamanId: string, spiritId: string): Promise<Spirit | null> {
+    return await this._dataSource.transaction(async (entityManager: EntityManager) => {
+      const shaman = await this.findShamanById(shamanId);
+      if (!shaman) return null;
+
+      const existingSpirit = this.findBindedSpirit(shaman.guardianSpirits, spiritId);
+      if (!existingSpirit) return null;
+
+      existingSpirit.level++;
+      existingSpirit.furyokuLevel += Number((existingSpirit.furyokuLevel * (Math.random() * 100) / 100).toFixed(0));;
+
+      return await entityManager.save(Spirit, existingSpirit);
+    })
+  }
 }
