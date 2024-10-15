@@ -1,24 +1,24 @@
 import {
-  IsArray,
+  IsInt,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsString,
-  ValidateNested,
+  Length,
   Min,
 } from "class-validator";
-import { UpdateSpiritDto } from "@modules/spirit/models/dto";
-import { Type } from "class-transformer";
+import { Transform } from "class-transformer";
 
 export class UpdateShamanDto {
   @IsOptional()
   @IsNotEmpty()
   @IsString()
+  @Length(2, 250)
+  @Transform(({ value }) => value.trim)
   public name: string;
 
   @IsOptional()
   @IsNotEmpty()
-  @IsNumber()
+  @IsInt()
   @Min(0)
   public furyokuLevel: number;
 }

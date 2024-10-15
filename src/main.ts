@@ -37,7 +37,10 @@ const configureApp = (
     defaultVersion: apiVersion,
   });
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+    forbidNonWhitelisted: true,
+  }));
 
   app.useGlobalInterceptors(
     new ClassSerializerInterceptor(app.get(Reflector), { excludeExtraneousValues: true }),

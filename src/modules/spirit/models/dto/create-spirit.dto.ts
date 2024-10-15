@@ -1,13 +1,16 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsString, Min } from "class-validator";
+import { IsEnum, IsInt, IsNotEmpty, IsString, Length, Min } from "class-validator";
 import { SpiritClass } from "../enums";
+import { Transform } from "class-transformer";
 
 export class CreateSpiritDto {
   @IsNotEmpty()
   @IsString()
+  @Length(2, 250)
+  @Transform(({ value }) => value.trim)
   public name: string;
 
   @IsNotEmpty()
-  @IsNumber()
+  @IsInt()
   @Min(0)
   public furyokuLevel: number;
 

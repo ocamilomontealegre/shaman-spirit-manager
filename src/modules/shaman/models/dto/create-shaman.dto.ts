@@ -1,14 +1,16 @@
-import { IsArray, IsNotEmpty, IsNumber, IsString, Min, ValidateNested } from "class-validator";
-import { Type } from "class-transformer";
+import { IsArray, IsInt, IsNotEmpty, IsString, Length, Min, ValidateNested } from "class-validator";
+import { Transform, Type } from "class-transformer";
 import { CreateSpiritDto } from "@modules/spirit/models/dto";
 
 export class CreateShamanDto {
   @IsNotEmpty()
   @IsString()
+  @Length(2, 250)
+  @Transform(({ value }) => value.trim)
   public name: string;
 
   @IsNotEmpty()
-  @IsNumber()
+  @IsInt()
   @Min(0)
   public furyokuLevel: number;
 
