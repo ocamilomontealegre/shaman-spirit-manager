@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { DuelService } from "../services/duel.service";
 import { Duel } from "../models/entities/duel.entity";
 
@@ -19,5 +19,15 @@ export class DuelController {
   @Get(":id")
   public async findOneById(@Param("id") id: string): Promise<Duel | null> {
     return this._duelsService.findOneById(id);
+  }
+
+  @Put(":id")
+  public async updateOneById(@Param("id") id: string, duel: any): Promise<Duel | null> {
+    return this._duelsService.updateOneById(id, duel);
+  }
+
+  @Delete(":id")
+  public async deleteOneById(@Param("id") id: string): Promise<Duel | null> {
+    return this._duelsService.deleteOneById(id);
   }
 }
