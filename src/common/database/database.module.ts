@@ -3,6 +3,7 @@ import { ConfigType } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Shaman } from "@modules/shaman/models/entities";
 import { Spirit } from "@modules/spirit/models/entities";
+import { Duel } from "@modules/duel/models/entities/duel.entity";
 import { pgConfig } from "@common/env";
 
 @Module({
@@ -16,7 +17,7 @@ import { pgConfig } from "@common/env";
         username: _pgConfig.username,
         password: _pgConfig.password,
         database: _pgConfig.database,
-        entities: [Shaman, Spirit],
+        entities: [Shaman, Spirit, Duel],
         synchronize: true,
       }),
     }),

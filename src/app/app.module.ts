@@ -4,6 +4,7 @@ import { DatabaseModule } from "@common/database/database.module";
 import { HealthModule } from "@health/health.module";
 import { ShamanModule } from "@modules/shaman/shaman.module";
 import { SpiritModule } from "@modules/spirit/spirit.module";
+import { DuelModule } from "@modules/duel/duel.module";
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { SpiritModule } from "@modules/spirit/spirit.module";
     HealthModule,
     ShamanModule,
     SpiritModule,
+    DuelModule,
   ],
 })
 export class AppModule {}
