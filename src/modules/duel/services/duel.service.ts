@@ -17,4 +17,14 @@ export class DuelService {
   public async findOneById(id: string): Promise<Duel | null> {
     return this._duelsRepository.findOne({ where: { id } });
   }
+
+  public async updateOneById(id: string, duel: any): Promise<Duel | null> {
+    const result = this._duelsRepository.update(id, duel);
+    return result ? await this.findOneById(id) : null;
+  }
+
+  public async deleteOneById(id: string): Promise<Duel | null> {
+    const result = this._duelsRepository.softDelete(id);
+    return result ? await this.findOneById(id) : null;
+  }
 }
