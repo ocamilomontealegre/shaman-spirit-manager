@@ -23,8 +23,8 @@ export class Duel {
   @ManyToMany(() => Shaman, (shaman) => shaman.name, { cascade: true })
   @JoinTable()
   @Expose()
-  @ApiProperty({ type: [String], description: "List of Participants" })
-  public participants: String[];
+  @ApiProperty({ type: [String], description: "List of Fighters" })
+  public fighters: String[];
 
   @Column({ type: "jsonb" })
   @Expose()

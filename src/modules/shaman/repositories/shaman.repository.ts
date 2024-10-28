@@ -72,7 +72,7 @@ export class ShamanRepository extends Repository<Shaman> {
       shaman.guardianSpirits.push(spirit);
 
       return await entityManager.save(Shaman, shaman);
-    })
+    });
   }
 
   public async trainSpirit(shamanId: string, spiritId: string): Promise<Spirit | null> {
@@ -84,9 +84,11 @@ export class ShamanRepository extends Repository<Shaman> {
       if (!existingSpirit) return null;
 
       existingSpirit.level++;
-      existingSpirit.furyokuLevel += Number((existingSpirit.furyokuLevel * (Math.random() * 100) / 100).toFixed(0));;
+      existingSpirit.furyokuLevel += Number(
+        ((existingSpirit.furyokuLevel * (Math.random() * 100)) / 100).toFixed(0),
+      );
 
       return await entityManager.save(Spirit, existingSpirit);
-    })
+    });
   }
 }
