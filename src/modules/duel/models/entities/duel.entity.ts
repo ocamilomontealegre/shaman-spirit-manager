@@ -20,8 +20,7 @@ export class Duel {
   @ApiProperty({ type: String, description: "Unique identifier for the duel" })
   public id: string;
 
-  @ManyToMany(() => Shaman, (shaman) => shaman.name, { cascade: true })
-  @JoinTable()
+  @Column({ type: "json" })
   @Expose()
   @ApiProperty({ type: [String], description: "List of Fighters" })
   public fighters: String[];

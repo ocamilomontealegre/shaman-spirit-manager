@@ -14,7 +14,7 @@ export class DuelController {
   @ApiOperation({ summary: "Create a new duel record" })
   @ApiBody({ type: CreateDuelDto })
   @ApiResponse({ type: Duel, status: 200, description: "Duel data" })
-  public async create(@Body() duel: any): Promise<any> {
+  public async create(@Body() duel: CreateDuelDto): Promise<any> {
     return this._duelsService.create(duel);
   }
 
